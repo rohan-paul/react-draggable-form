@@ -10,19 +10,20 @@ import {
 } from "../actions/getUserActions"
 import Button from "@material-ui/core/Button"
 import Switch from "@material-ui/core/Switch"
+import IconButton from "@material-ui/core/IconButton"
+import CancelIcon from "@material-ui/icons/Cancel"
 
 const renderSwitch = props => {
-  // const [state, setState] = React.useState({
-  //   checkedA: true,
-  //   checkedB: true,
-  // });
-
-  const handleChange = name => event => {
-    // setState({ ...state, [name]: event.target.checked });
-  }
+  const handleChange = name => event => {}
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      <IconButton
+        // onClick={this.handleToggle}
+        style={{ float: "right", marginBotton: "20px" }}
+      >
+        <CancelIcon />
+      </IconButton>
       <Switch
         checked={props.mandatory !== "Y"}
         onChange={handleChange("checkedA")}
