@@ -8,6 +8,7 @@ import {
 const initialState = {
   initialLoadedData: [],
   chnangedOrderData: [],
+  snackbar: false,
 }
 
 export default (state = initialState, actions) => {
@@ -30,12 +31,7 @@ export default (state = initialState, actions) => {
       return {
         ...state,
         chnangedOrderData: actions.payload,
-      }
-
-    case FIRST_NAME:
-      return {
-        ...state,
-        first_name: actions.payload,
+        snackbar: true,
       }
 
     default:

@@ -5,13 +5,14 @@ import { ListManager } from "react-beautiful-dnd-grid"
 import TextField from "@material-ui/core/TextField"
 import axios from "axios"
 import {
-  handleFirstNameChange,
+  handleSnackBarStatus,
   submitChangedOrder,
 } from "../actions/getUserActions"
 import Button from "@material-ui/core/Button"
 import Switch from "@material-ui/core/Switch"
 import IconButton from "@material-ui/core/IconButton"
 import CancelIcon from "@material-ui/icons/Cancel"
+import GlobalSnackbar from "./GlobalSnackbar"
 
 const renderSwitch = props => {
   const handleChange = name => event => {}
@@ -105,7 +106,7 @@ const ListElement = ({
   )
 }
 
-// Functiion to add an ID to each item of the array of objects, received from API call, as the raw data received from the API does not have an id field
+// Function to add an ID to each item of the array of objects, received from API call, as the raw data received from the API does not have an id field
 const addId = arr => {
   return arr.map(function(obj, index) {
     return Object.assign({}, obj, { id: index })
@@ -170,6 +171,8 @@ class FormTextField extends React.Component {
     this.sortList()
   }
 
+  closeSnackbar = () => this.props.handleSnackBarStatus(false)
+
   render = () => (
     <div className="FormTextField">
       <ListManager
@@ -217,13 +220,19 @@ class FormTextField extends React.Component {
           Save
         </Button>
       </div>
+      <GlobalSnackbar
+        open={this.props.globalStore.snackbar === true}
+        variant="error"
+        message={"Successfully Submitted the Changed Orders"}
+        onClose={this.closeSnackbar}
+      />
     </div>
   )
 }
 
 FormTextField.propTypes = {
   user: PropTypes.object,
-  handleFirstNameChange: PropTypes.func,
+  handleSnackBarStatus: PropTypes.func,
 }
 
 const mapStateToProps = state => {
@@ -231,8 +240,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-  handleFirstNameChange,
   submitChangedOrder,
+  handleSnackBarStatus,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormTextField)
