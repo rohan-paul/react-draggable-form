@@ -30,50 +30,8 @@ const DraggableForm = () => {
             <div>
               <FormTextField></FormTextField>
             </div>
-            {/* <div>
-              <FormTextField></FormTextField>
-            </div>
-            <div>
-              <FormTextField></FormTextField>
-            </div>
-            <div>
-              <FormTextField></FormTextField>
-            </div>
-            <div>
-              <FormTextField></FormTextField>
-            </div> */}
           </div>
-
-          {/* <div>
-            <div>
-              <FormTextField></FormTextField>
-            </div>
-            <div>
-              <FormTextField></FormTextField>
-            </div>
-            <div>
-              <FormTextField></FormTextField>
-            </div>
-            <div>
-              <FormTextField></FormTextField>
-            </div>
-            <div>
-              <FormTextField></FormTextField>
-            </div>
-          </div> */}
         </div>
-
-        <GlobalSnackbar
-          open={
-            globalStore.snackbar === true ||
-            typeof globalStore.snackbar === "object" ||
-            typeof globalStore.snackbar === "string" ||
-            globalStore.snackbar instanceof String
-          }
-          variant="error"
-          message={"Error occurred while loading Initial Data"}
-          onClose={closeSnackbar}
-        />
       </div>
     </div>
   )

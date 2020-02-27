@@ -1,167 +1,137 @@
 import React from "react"
-import { connect } from "react-redux"
-import PropTypes from "prop-types"
-import { withStyles } from "@material-ui/core"
+import { ListManager } from "react-beautiful-dnd-grid"
 import TextField from "@material-ui/core/TextField"
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 
-const renderTextField = (...props) => {
-  const { classes } = props
+const list = [
+  {
+    id: "0",
+    order: 0,
+  },
+  {
+    id: "1",
+    order: 1,
+  },
+  {
+    id: "2",
+    order: 2,
+  },
+  {
+    id: "3",
+    order: 3,
+  },
+  {
+    id: "4",
+    order: 4,
+  },
+  {
+    id: "5",
+    order: 5,
+  },
+  {
+    id: "6",
+    order: 6,
+  },
+  {
+    id: "7",
+    order: 7,
+  },
+]
+
+const sortList = list => {
+  return list.slice().sort((first, second) => first.order - second.order)
+}
+
+const ListElement = ({ item: { id } }, ...props) => {
   const { autoFocus, valueContent, label, types, onChange, helperText } = props
   return (
-    <TextField
-      required
-      autoFocus={autoFocus}
-      multiline={label === "Description of Field" ? true : undefined}
-      // classes={{
-      //   root: classes.space,
-      // }}
-      value={valueContent || ""}
-      onChange={e => onChange(e.target.value)}
-      helperText={helperText}
-      label={label}
-      type={types}
-      fullWidth
-      // InputProps={{
-      //   classes: {
-      //     underline: classes.underline,
-      //   },
-      // }}
-    />
+    <div
+      style={{
+        width: "530px",
+        height: "120px",
+        marginRight: "10px",
+        marginLeft: "20px",
+        marginTop: "10px",
+        backgroundColor: "lightblue",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        fontSize: "2em",
+        fontWeight: "bold",
+        color: "white",
+        borderRadius: "10px",
+      }}
+    >
+      <div>{id}</div>
+      <TextField
+        required
+        autoFocus={autoFocus}
+        multiline={label === "Description of Field" ? true : undefined}
+        style={{
+          marginRight: "10px",
+          marginLeft: "10px",
+          height: "60px",
+          marginBottom: 0,
+        }}
+        value={valueContent || ""}
+        onChange={e => onChange(e.target.value)}
+        helperText={helperText}
+        label={label}
+        type={types}
+        fullWidth
+      />
+    </div>
   )
 }
 
-const styles = theme => ({
-  root: {
-    width: "100%",
-    background: "linear-gradient(45deg, #B5D3E7 30%, #FF8E53 90%)",
-    marginTop: theme.spacing(10),
-    backgroundColor: "#E0E0E0",
-  },
-  space: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(3),
-    backgroundColor: "#fff",
-    borderRadius: "5px",
-    minWidth: "450px",
-  },
-  underline: {
-    "&:after": {
-      borderBottomColor: "rgb(70, 197, 29)",
-      borderWidth: "1px",
-    },
-  },
-})
-
-// const getItems = count =>
-//   Array.from({ length: count }, (v, k) => k).map(k => ({
-//     id: `item-${k}`,
-//     content: `item ${k}`,
-//   }))
-
-const getItems = count =>
-  Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${k}`,
-    content: renderTextField(),
-  }))
-
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
-}
-
-const grid = 8
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: "none",
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-
-  // change background colour if dragging
-  background: isDragging ? "lightgreen" : "#B5D3E7",
-
-  // styles we need to apply on draggables
-  ...draggableStyle,
-})
-
-const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? "lightblue" : "grey",
-  padding: 2,
-  width: 350,
-})
-
 class FormTextField extends React.Component {
-  constructor(props, context) {
-    super(props, context)
-    this.state = {
-      items: getItems(4),
-    }
+  state = {
+    sortedList: sortList(list),
   }
 
-  onDragEnd = result => {
-    console.log(result)
-    // dropped outside the list
-    if (!result.destination) {
-      return
-    }
-
-    const items = reorder(
-      this.state.items,
-      result.source.index,
-      result.destination.index,
-    )
-
+  sortList = () => {
     this.setState({
-      items,
+      ...this.state,
+      sortedList: sortList(this.state.sortedList),
     })
   }
-  render() {
-    return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="droppable">
-          {(droppableProvided, droppableSnapshot) => (
-            <div
-              ref={droppableProvided.innerRef}
-              style={getListStyle(droppableSnapshot.isDraggingOver)}
-            >
-              {this.state.items.map((item, index) => (
-                <Draggable key={item.id} draggableId={item.id} index={index}>
-                  {(draggableProvided, draggableSnapshot) => (
-                    <div
-                      ref={draggableProvided.innerRef}
-                      {...draggableProvided.draggableProps}
-                      {...draggableProvided.dragHandleProps}
-                      style={getItemStyle(
-                        draggableSnapshot.isDragging,
-                        draggableProvided.draggableProps.style,
-                      )}
-                    >
-                      {item.content}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {droppableProvided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-    )
+
+  reorderList = (sourceIndex, destinationIndex) => {
+    if (destinationIndex === sourceIndex) {
+      return
+    }
+    const list = this.state.sortedList
+    if (destinationIndex === 0) {
+      list[sourceIndex].order = list[0].order - 1
+      this.sortList()
+      return
+    }
+    if (destinationIndex === list.length - 1) {
+      list[sourceIndex].order = list[list.length - 1].order + 1
+      this.sortList()
+      return
+    }
+    if (destinationIndex < sourceIndex) {
+      list[sourceIndex].order =
+        (list[destinationIndex].order + list[destinationIndex - 1].order) / 2
+      this.sortList()
+      return
+    }
+    list[sourceIndex].order =
+      (list[destinationIndex].order + list[destinationIndex + 1].order) / 2
+    this.sortList()
   }
+
+  render = () => (
+    <div className="FormTextField">
+      <ListManager
+        items={this.state.sortedList}
+        direction="horizontal"
+        maxItems={2}
+        render={item => <ListElement item={item} />}
+        onDragEnd={this.reorderList}
+      />
+    </div>
+  )
 }
 
-FormTextField.propTypes = {
-  autoFocus: PropTypes.bool,
-  onChange: PropTypes.func,
-  helperText: PropTypes.string,
-  label: PropTypes.string,
-  valueContent: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-}
-
-// export default connect(null, null)(withStyles(styles)(FormTextField))
-
-export default withStyles(styles)(FormTextField)
+export default FormTextField
