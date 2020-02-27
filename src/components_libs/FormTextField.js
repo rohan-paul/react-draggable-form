@@ -3,48 +3,83 @@ import { connect } from "react-redux"
 import PropTypes from "prop-types"
 import { ListManager } from "react-beautiful-dnd-grid"
 import TextField from "@material-ui/core/TextField"
-import { handleFirstNameChange } from "../actions/getUserActions"
+import {
+  handleFirstNameChange,
+  loadInitialData,
+} from "../actions/getUserActions"
 
 const list = [
   {
-    id: "0",
-    order: 0,
-    field: "First Name",
-  },
-  {
-    id: "1",
+    id: 0,
+    createdOn: "2020-02-24T13:20:47.500+0000",
+    fieldName: "First Name",
+    fieldType: "TXT",
+    mandatory: "Y",
     order: 1,
-    field: "Last Name",
+    expectedValues: [],
   },
   {
-    id: "2",
+    id: 1,
+    createdOn: "2020-02-24T13:20:47.500+0000",
+    fieldName: "Last Name",
+    fieldType: "TXT",
+    mandatory: "N",
     order: 2,
-    field: "Email Address",
+    expectedValues: [],
   },
   {
-    id: "3",
+    id: 2,
+    createdOn: "2020-02-24T13:20:47.500+0000",
+    fieldName: "Email Address",
+    fieldType: "TXT",
+    mandatory: "Y",
     order: 3,
-    field: "Company Name",
+    expectedValues: [],
   },
   {
-    id: "4",
+    id: 3,
+    createdOn: "2020-02-24T13:20:47.500+0000",
+    fieldName: "Title",
+    fieldType: "TXT",
+    mandatory: "N",
     order: 4,
-    field: "First Name",
+    expectedValues: [],
   },
   {
-    id: "5",
+    id: 4,
+    createdOn: "2020-02-24T13:20:47.500+0000",
+    fieldName: "Company Name",
+    fieldType: "SS",
+    mandatory: "Y",
     order: 5,
-    field: "First Name",
+    expectedValues: ["Enhancio", "Infosys", "Microsoft"],
   },
   {
-    id: "6",
+    id: 5,
+    createdOn: "2020-02-24T13:20:47.500+0000",
+    fieldName: "Job Level",
+    fieldType: "SS",
+    mandatory: "Y",
     order: 6,
-    field: "First Name",
+    expectedValues: ["Manager", "Engineer"],
   },
   {
-    id: "7",
+    id: 6,
+    createdOn: "2020-02-24T13:20:47.500+0000",
+    fieldName: "Job Function",
+    fieldType: "SS",
+    mandatory: "Y",
     order: 7,
-    field: "First Name",
+    expectedValues: ["Designer", "Developer"],
+  },
+  {
+    id: 7,
+    createdOn: "2020-02-24T13:20:47.500+0000",
+    fieldName: "Company Size",
+    fieldType: "MS",
+    mandatory: "Y",
+    order: 8,
+    expectedValues: ["10 -20", "20-30", "30-100"],
   },
 ]
 
@@ -53,15 +88,16 @@ const sortList = list => {
 }
 
 const ListElement = ({
-  item: { id, field },
+  item: { id, fieldName },
   handleFirstNameChange,
+  sortedList,
   ...props
 }) => {
   const { autoFocus, valueContent, label, types, helperText } = props
 
-  const onChange = (e, field) => {
-    if (field === "First Name") {
-      handleFirstNameChange(e, field)
+  const onChange = (e, fieldName) => {
+    if (fieldName === "First Name") {
+      handleFirstNameChange(e, fieldName)
     }
   }
   return (
@@ -82,7 +118,7 @@ const ListElement = ({
         borderRadius: "10px",
       }}
     >
-      {console.log("ListElement ITEM IS ", field)}
+      {console.log("ListElement ITEM IS ", fieldName)}
       <div>{id}</div>
       <TextField
         required
@@ -97,7 +133,7 @@ const ListElement = ({
         value={valueContent || ""}
         onChange={e => {
           console.log(e.target.value)
-          onChange(e.target.value, field)
+          onChange(e.target.value, fieldName)
         }}
         helperText={helperText}
         label={label}
@@ -111,6 +147,13 @@ const ListElement = ({
 class FormTextField extends React.Component {
   state = {
     sortedList: sortList(list),
+  }
+
+  componentDidCatch() {
+    this.props.loadInitialData()
+    this.setState({
+      sortedList: this.props.globalStore.initialLoadedData,
+    })
   }
 
   // Function to just update the list state
@@ -162,8 +205,9 @@ class FormTextField extends React.Component {
           <ListElement
             item={item}
             handleFirstNameChange={this.props.handleFirstNameChange}
+            sortedList={this.state.sortedList}
             valueContent={
-              item.field === "First Name"
+              item.fieldName === "First Name"
                 ? this.props.globalStore.first_name
                 : ""
             }
@@ -186,6 +230,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   handleFirstNameChange,
+  loadInitialData,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormTextField)

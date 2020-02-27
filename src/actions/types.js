@@ -1,2 +1,3 @@
 export const FIRST_NAME = "FIRST_NAME"
 export const SNACKBAR_STATUS = "SNACKBAR_STATUS"
+export const LOAD_INITIAL_DATA = "LOAD_INITIAL_DATA"

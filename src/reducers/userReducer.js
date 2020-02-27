@@ -1,6 +1,11 @@
-import { FIRST_NAME, SNACKBAR_STATUS } from "../actions/types"
+import {
+  FIRST_NAME,
+  SNACKBAR_STATUS,
+  LOAD_INITIAL_DATA,
+} from "../actions/types"
 
 const initialState = {
+  initialLoadedData: [],
   first_name: "paul",
 }
 
@@ -11,6 +16,12 @@ export default (state = initialState, actions) => {
       return {
         ...state,
         snackbar: actions.payload,
+      }
+
+    case LOAD_INITIAL_DATA:
+      return {
+        ...state,
+        initialLoadedData: actions.payload,
       }
 
     case FIRST_NAME:
