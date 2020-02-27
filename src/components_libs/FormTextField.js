@@ -9,24 +9,49 @@ import {
   submitChangedOrder,
 } from "../actions/getUserActions"
 import Button from "@material-ui/core/Button"
+import Switch from "@material-ui/core/Switch"
+
+const renderSwitch = props => {
+  // const [state, setState] = React.useState({
+  //   checkedA: true,
+  //   checkedB: true,
+  // });
+
+  const handleChange = name => event => {
+    // setState({ ...state, [name]: event.target.checked });
+  }
+
+  return (
+    <div>
+      <Switch
+        checked={props.mandatory !== "Y"}
+        onChange={handleChange("checkedA")}
+        value="checkedA"
+        inputProps={{ "aria-label": "secondary checkbox" }}
+      />
+    </div>
+  )
+}
 
 const sortList = list => {
   return list.slice().sort((first, second) => first.order - second.order)
 }
 
 const ListElement = ({
-  item: { id, fieldName },
+  item: { id, fieldName, mandatory },
   handleFirstNameChange,
   sortedList,
   ...props
 }) => {
-  const { autoFocus, valueContent, label, types, helperText } = props
+  const { autoFocus, label, types, helperText } = props
 
-  const onChange = (e, fieldName) => {
-    if (fieldName === "First Name") {
-      handleFirstNameChange(e, fieldName)
-    }
-  }
+  // This function is no more required, as I was coding it to provide user ability to edit each field's text data
+  // const onChange = (e, fieldName) => {
+  //   if (fieldName === "First Name") {
+  //     handleFirstNameChange(e, fieldName)
+  //   }
+  // }
+
   return (
     <>
       <div
@@ -36,7 +61,8 @@ const ListElement = ({
           marginRight: "10px",
           marginLeft: "20px",
           marginTop: "10px",
-          backgroundColor: "lightblue",
+          // backgroundColor: "#DCDCDC",
+          backgroundColor: "white",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -66,6 +92,9 @@ const ListElement = ({
           label={label}
           type={types}
           fullWidth
+          InputProps={{
+            endAdornment: renderSwitch((mandatory = { mandatory })),
+          }}
         />
       </div>
     </>

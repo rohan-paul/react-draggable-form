@@ -6,7 +6,6 @@ import {
 } from "../actions/types"
 
 const initialState = {
-  // initialLoadedData: list,
   initialLoadedData: [],
   chnangedOrderData: [],
 }
