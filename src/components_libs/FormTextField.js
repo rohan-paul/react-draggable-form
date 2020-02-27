@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/core/styles"
 import TextField from "@material-ui/core/TextField"
 import { MuiThemeProvider } from "@material-ui/core/styles"
-import themeCustom from "../commonStyles/AddNewItemThemes"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,6 +16,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(3),
     backgroundColor: "#fff",
     borderRadius: "5px",
+    minWidth: "450px",
   },
   underline: {
     "&:after": {
@@ -32,29 +32,27 @@ const FormTextField = props => {
   const classes = useStyles()
 
   return (
-    <MuiThemeProvider theme={themeCustom}>
-      <React.Fragment>
-        <TextField
-          required
-          autoFocus={autoFocus}
-          multiline={label === "Description of Field" ? true : undefined}
-          classes={{
-            root: classes.space,
-          }}
-          value={valueContent || ""}
-          onChange={e => onChange(e.target.value)}
-          helperText={helperText}
-          label={label}
-          type={types}
-          fullWidth
-          InputProps={{
-            classes: {
-              underline: classes.underline,
-            },
-          }}
-        />
-      </React.Fragment>
-    </MuiThemeProvider>
+    <React.Fragment>
+      <TextField
+        required
+        autoFocus={autoFocus}
+        multiline={label === "Description of Field" ? true : undefined}
+        classes={{
+          root: classes.space,
+        }}
+        value={valueContent || ""}
+        onChange={e => onChange(e.target.value)}
+        helperText={helperText}
+        label={label}
+        type={types}
+        fullWidth
+        InputProps={{
+          classes: {
+            underline: classes.underline,
+          },
+        }}
+      />
+    </React.Fragment>
   )
 }
 

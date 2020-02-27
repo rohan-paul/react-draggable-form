@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 
 const useStyles = makeStyles(theme => ({
@@ -23,6 +24,22 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center ",
     verticalAlign: "middle ",
     textAlign: "center",
+  },
+
+  formContainer: {
+    display: "flex",
+    flexDirection: "row",
+    //
+    backgroundColor: theme.background.paper,
+    borderRadius: theme.shape.borderRadius,
+    paddingBottom: "100px",
+    alignItems: "center ",
+    justifyContent: "center ",
+    verticalAlign: "middle ",
+    textAlign: "center",
+  },
+  leftTable: {
+    marginRight: "2%",
   },
 
   inputandButtonContainer: {

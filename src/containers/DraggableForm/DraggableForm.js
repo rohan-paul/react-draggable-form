@@ -25,9 +25,42 @@ const DraggableForm = () => {
   return (
     <div className={classes.container}>
       <div className={classes.tableAndFabContainer}>
-        <div className={classes.table}>
-          {console.log("SNACKBAR ", globalStore.snackbar)}
-          <FormTextField></FormTextField>
+        <div className={classes.formContainer}>
+          <div className={classes.leftTable}>
+            <div>
+              <FormTextField></FormTextField>
+            </div>
+            <div>
+              <FormTextField></FormTextField>
+            </div>
+            <div>
+              <FormTextField></FormTextField>
+            </div>
+            <div>
+              <FormTextField></FormTextField>
+            </div>
+            <div>
+              <FormTextField></FormTextField>
+            </div>
+          </div>
+
+          <div>
+            <div>
+              <FormTextField></FormTextField>
+            </div>
+            <div>
+              <FormTextField></FormTextField>
+            </div>
+            <div>
+              <FormTextField></FormTextField>
+            </div>
+            <div>
+              <FormTextField></FormTextField>
+            </div>
+            <div>
+              <FormTextField></FormTextField>
+            </div>
+          </div>
         </div>
 
         <GlobalSnackbar
