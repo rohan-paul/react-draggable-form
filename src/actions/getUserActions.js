@@ -10,6 +10,13 @@ const headers = {
   "Content-Type": "application/json",
 }
 
+// Functiion to add an ID to each item of the array of objects, received from API call, as the raw data received from the API does not have an id field
+const addId = arr => {
+  return arr.map(function(obj, index) {
+    return Object.assign({}, obj, { id: index })
+  })
+}
+
 export const handleSnackBarStatus = bool => {
   return {
     type: SNACKBAR_STATUS,
@@ -18,17 +25,17 @@ export const handleSnackBarStatus = bool => {
 }
 
 export const loadInitialData = () => async dispatch => {
-  const url = ""
+  const url = "http://54.193.89.54:8230/readFields"
   axios
     .get(url)
     .then(res => {
       dispatch({
         type: LOAD_INITIAL_DATA,
-        payload: res.data,
+        payload: addId(res.data),
       })
     })
     .catch(err => {
-      console.log("Error occured while fetching data from API")
+      console.log("Error occurred while fetching initial data from API")
     })
 }
 

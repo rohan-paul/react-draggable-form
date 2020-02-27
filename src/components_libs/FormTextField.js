@@ -3,85 +3,11 @@ import { connect } from "react-redux"
 import PropTypes from "prop-types"
 import { ListManager } from "react-beautiful-dnd-grid"
 import TextField from "@material-ui/core/TextField"
+import axios from "axios"
 import {
   handleFirstNameChange,
   loadInitialData,
 } from "../actions/getUserActions"
-
-const list = [
-  {
-    id: 0,
-    createdOn: "2020-02-24T13:20:47.500+0000",
-    fieldName: "First Name",
-    fieldType: "TXT",
-    mandatory: "Y",
-    order: 1,
-    expectedValues: [],
-  },
-  {
-    id: 1,
-    createdOn: "2020-02-24T13:20:47.500+0000",
-    fieldName: "Last Name",
-    fieldType: "TXT",
-    mandatory: "N",
-    order: 2,
-    expectedValues: [],
-  },
-  {
-    id: 2,
-    createdOn: "2020-02-24T13:20:47.500+0000",
-    fieldName: "Email Address",
-    fieldType: "TXT",
-    mandatory: "Y",
-    order: 3,
-    expectedValues: [],
-  },
-  {
-    id: 3,
-    createdOn: "2020-02-24T13:20:47.500+0000",
-    fieldName: "Title",
-    fieldType: "TXT",
-    mandatory: "N",
-    order: 4,
-    expectedValues: [],
-  },
-  {
-    id: 4,
-    createdOn: "2020-02-24T13:20:47.500+0000",
-    fieldName: "Company Name",
-    fieldType: "SS",
-    mandatory: "Y",
-    order: 5,
-    expectedValues: ["Enhancio", "Infosys", "Microsoft"],
-  },
-  {
-    id: 5,
-    createdOn: "2020-02-24T13:20:47.500+0000",
-    fieldName: "Job Level",
-    fieldType: "SS",
-    mandatory: "Y",
-    order: 6,
-    expectedValues: ["Manager", "Engineer"],
-  },
-  {
-    id: 6,
-    createdOn: "2020-02-24T13:20:47.500+0000",
-    fieldName: "Job Function",
-    fieldType: "SS",
-    mandatory: "Y",
-    order: 7,
-    expectedValues: ["Designer", "Developer"],
-  },
-  {
-    id: 7,
-    createdOn: "2020-02-24T13:20:47.500+0000",
-    fieldName: "Company Size",
-    fieldType: "MS",
-    mandatory: "Y",
-    order: 8,
-    expectedValues: ["10 -20", "20-30", "30-100"],
-  },
-]
 
 const sortList = list => {
   return list.slice().sort((first, second) => first.order - second.order)
@@ -130,7 +56,8 @@ const ListElement = ({
           height: "60px",
           marginBottom: 0,
         }}
-        value={valueContent || ""}
+        // value={  valueContent || ""}
+        value={fieldName === "First Name" ? "First Name" : ""}
         onChange={e => {
           console.log(e.target.value)
           onChange(e.target.value, fieldName)
@@ -144,15 +71,33 @@ const ListElement = ({
   )
 }
 
+// Functiion to add an ID to each item of the array of objects, received from API call, as the raw data received from the API does not have an id field
+const addId = arr => {
+  return arr.map(function(obj, index) {
+    return Object.assign({}, obj, { id: index })
+  })
+}
+
 class FormTextField extends React.Component {
   state = {
-    sortedList: sortList(list),
+    sortedList: [],
+    // sortedList: sortList(this.props.globalStore.initialLoadedData),
+    // sortedList: this.props.globalStore.initialLoadedData,
   }
 
-  componentDidCatch() {
-    this.props.loadInitialData()
-    this.setState({
-      sortedList: this.props.globalStore.initialLoadedData,
+  // componentDidMount() {
+  //   this.props.loadInitialData()
+  //   this.setState({
+  //     sortedList: this.props.globalStore.initialLoadedData,
+  //   })
+  // }
+
+  componentDidMount() {
+    const url = "http://54.193.89.54:8230/readFields"
+    axios.get(url).then(res => {
+      this.setState({
+        sortedList: addId(res.data),
+      })
     })
   }
 
@@ -196,7 +141,8 @@ class FormTextField extends React.Component {
 
   render = () => (
     <div className="FormTextField">
-      {console.log("FULL USER STATE, ", this.props.globalStore)}
+      {console.log("FULL LOCAL STATE, ", this.state.sortedList)}
+      {/* {this.state.sortedList.length !== 0 ? ( */}
       <ListManager
         items={this.state.sortedList}
         direction="horizontal"
@@ -215,6 +161,7 @@ class FormTextField extends React.Component {
         )}
         onDragEnd={this.reorderList}
       />
+      {/* ) : null} */}
     </div>
   )
 }

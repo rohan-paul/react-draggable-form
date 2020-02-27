@@ -148,12 +148,12 @@ const initialApiFetch = [
   },
 ]
 
-export default initialApiFetch
+// export default initialApiFetch
 
-/* function addId(arr) {
+const addId = (arr) => {
   return arr.map(function(obj, index) {
     return Object.assign({}, obj, { id: index });
   });
 };
 
-console.log(addId(initialApiFetch)) */
+console.log(addId(initialApiFetch))

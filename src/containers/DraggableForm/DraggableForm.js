@@ -6,6 +6,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { useStyles } from "./DraggableFormStyles"
 import FormTextField from "../../components_libs/FormTextField"
+import Button from "@material-ui/core/Button"
 
 const DraggableForm = () => {
   const classes = useStyles()
@@ -19,6 +20,34 @@ const DraggableForm = () => {
               <FormTextField></FormTextField>
             </div>
           </div>
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            right: "30px",
+            bottom: "30px",
+            float: "right",
+          }}
+        >
+          <Button
+            // onClick={onClose}
+            variant="outlined"
+            size="large"
+            color="primary"
+            style={{ marginRight: "10px" }}
+          >
+            Cancel
+          </Button>
+          <Button
+            // onClick={
+            // }
+            variant="contained"
+            size="large"
+            color="primary"
+            // disabled={isSaveDisabled}
+          >
+            Save
+          </Button>
         </div>
       </div>
     </div>
