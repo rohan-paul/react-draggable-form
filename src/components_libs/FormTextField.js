@@ -19,7 +19,7 @@ const renderSwitch = props => {
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <IconButton
-        // onClick={this.handleToggle}
+        onClick={() => props.deleteItem(props.id)}
         style={{ float: "right", marginBotton: "20px" }}
       >
         <CancelIcon />
@@ -40,8 +40,8 @@ const sortList = list => {
 
 const ListElement = ({
   item: { id, fieldName, mandatory },
-  handleFirstNameChange,
   sortedList,
+  deleteItem,
   ...props
 }) => {
   const { autoFocus, label, types, helperText } = props
@@ -55,6 +55,7 @@ const ListElement = ({
 
   return (
     <>
+      {console.log("CLICKEd ITEM ", id)}
       <div
         style={{
           width: "530px",
@@ -94,7 +95,9 @@ const ListElement = ({
           type={types}
           fullWidth
           InputProps={{
-            endAdornment: renderSwitch((mandatory = { mandatory })),
+            endAdornment: renderSwitch(
+              (mandatory = { mandatory, deleteItem, id }),
+            ),
           }}
         />
       </div>
@@ -120,6 +123,12 @@ class FormTextField extends React.Component {
       this.setState({
         sortedList: addId(res.data),
       })
+    })
+  }
+
+  deleteItem = id => {
+    this.setState({
+      sortedList: this.state.sortedList.filter(i => i.id !== id),
     })
   }
 
@@ -163,12 +172,6 @@ class FormTextField extends React.Component {
 
   render = () => (
     <div className="FormTextField">
-      {/* {console.log("FULL LOCAL STATE, ", JSON.stringify(this.state.sortedList))} */}
-      {console.log(
-        "CHANGED chnangedOrderData AFTER POSTING, ",
-        JSON.stringify(this.props.globalStore.chnangedOrderData),
-      )}
-      {/* {this.state.sortedList.length !== 0 ? ( */}
       <ListManager
         items={this.state.sortedList}
         direction="horizontal"
@@ -177,15 +180,8 @@ class FormTextField extends React.Component {
         render={item => (
           <ListElement
             item={item}
-            // handleFirstNameChange={this.props.handleFirstNameChange}
+            deleteItem={this.deleteItem}
             sortedList={this.state.sortedList}
-            valueContent={
-              item.fieldName === "First Name"
-                ? this.props.globalStore.first_name
-                : item.fieldName === "Last Name"
-                ? "Last Name"
-                : ""
-            }
           />
         )}
         onDragEnd={this.reorderList}
