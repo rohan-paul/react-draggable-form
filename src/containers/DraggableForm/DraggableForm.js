@@ -30,7 +30,7 @@ const DraggableForm = () => {
             <div>
               <FormTextField></FormTextField>
             </div>
-            <div>
+            {/* <div>
               <FormTextField></FormTextField>
             </div>
             <div>
@@ -41,10 +41,10 @@ const DraggableForm = () => {
             </div>
             <div>
               <FormTextField></FormTextField>
-            </div>
+            </div> */}
           </div>
 
-          <div>
+          {/* <div>
             <div>
               <FormTextField></FormTextField>
             </div>
@@ -60,7 +60,7 @@ const DraggableForm = () => {
             <div>
               <FormTextField></FormTextField>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <GlobalSnackbar
