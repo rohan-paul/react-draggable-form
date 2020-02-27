@@ -21,34 +21,6 @@ const DraggableForm = () => {
             </div>
           </div>
         </div>
-        <div
-          style={{
-            position: "absolute",
-            right: "30px",
-            bottom: "30px",
-            float: "right",
-          }}
-        >
-          <Button
-            // onClick={onClose}
-            variant="outlined"
-            size="large"
-            color="primary"
-            style={{ marginRight: "10px" }}
-          >
-            Cancel
-          </Button>
-          <Button
-            // onClick={
-            // }
-            variant="contained"
-            size="large"
-            color="primary"
-            // disabled={isSaveDisabled}
-          >
-            Save
-          </Button>
-        </div>
       </div>
     </div>
   )

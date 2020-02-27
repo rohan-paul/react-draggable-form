@@ -6,8 +6,9 @@ import TextField from "@material-ui/core/TextField"
 import axios from "axios"
 import {
   handleFirstNameChange,
-  loadInitialData,
+  submitChangedOrder,
 } from "../actions/getUserActions"
+import Button from "@material-ui/core/Button"
 
 const sortList = list => {
   return list.slice().sort((first, second) => first.order - second.order)
@@ -27,47 +28,47 @@ const ListElement = ({
     }
   }
   return (
-    <div
-      style={{
-        width: "530px",
-        height: "120px",
-        marginRight: "10px",
-        marginLeft: "20px",
-        marginTop: "10px",
-        backgroundColor: "lightblue",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        fontSize: "2em",
-        fontWeight: "bold",
-        color: "white",
-        borderRadius: "10px",
-      }}
-    >
-      {console.log("ListElement ITEM IS ", fieldName)}
-      <div>{id}</div>
-      <TextField
-        required
-        autoFocus={autoFocus}
-        multiline={label === "Description of Field" ? true : undefined}
+    <>
+      <div
         style={{
+          width: "530px",
+          height: "120px",
           marginRight: "10px",
-          marginLeft: "10px",
-          height: "60px",
-          marginBottom: 0,
+          marginLeft: "20px",
+          marginTop: "10px",
+          backgroundColor: "lightblue",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontSize: "2em",
+          fontWeight: "bold",
+          color: "white",
+          borderRadius: "10px",
         }}
-        // value={  valueContent || ""}
-        value={fieldName === "First Name" ? "First Name" : ""}
-        onChange={e => {
-          console.log(e.target.value)
-          onChange(e.target.value, fieldName)
-        }}
-        helperText={helperText}
-        label={label}
-        type={types}
-        fullWidth
-      />
-    </div>
+      >
+        <div>{id}</div>
+        <TextField
+          required
+          autoFocus={autoFocus}
+          multiline={label === "Description of Field" ? true : undefined}
+          style={{
+            marginRight: "10px",
+            marginLeft: "10px",
+            height: "60px",
+            marginBottom: 0,
+          }}
+          value={fieldName}
+          // onChange={e => {
+          //   console.log(e.target.value)
+          //   onChange(e.target.value, fieldName)
+          // }}
+          helperText={helperText}
+          label={label}
+          type={types}
+          fullWidth
+        />
+      </div>
+    </>
   )
 }
 
@@ -81,16 +82,7 @@ const addId = arr => {
 class FormTextField extends React.Component {
   state = {
     sortedList: [],
-    // sortedList: sortList(this.props.globalStore.initialLoadedData),
-    // sortedList: this.props.globalStore.initialLoadedData,
   }
-
-  // componentDidMount() {
-  //   this.props.loadInitialData()
-  //   this.setState({
-  //     sortedList: this.props.globalStore.initialLoadedData,
-  //   })
-  // }
 
   componentDidMount() {
     const url = "http://54.193.89.54:8230/readFields"
@@ -141,20 +133,27 @@ class FormTextField extends React.Component {
 
   render = () => (
     <div className="FormTextField">
-      {console.log("FULL LOCAL STATE, ", this.state.sortedList)}
+      {/* {console.log("FULL LOCAL STATE, ", JSON.stringify(this.state.sortedList))} */}
+      {console.log(
+        "CHANGED chnangedOrderData AFTER POSTING, ",
+        JSON.stringify(this.props.globalStore.chnangedOrderData),
+      )}
       {/* {this.state.sortedList.length !== 0 ? ( */}
       <ListManager
         items={this.state.sortedList}
         direction="horizontal"
+        T
         maxItems={2}
         render={item => (
           <ListElement
             item={item}
-            handleFirstNameChange={this.props.handleFirstNameChange}
+            // handleFirstNameChange={this.props.handleFirstNameChange}
             sortedList={this.state.sortedList}
             valueContent={
               item.fieldName === "First Name"
                 ? this.props.globalStore.first_name
+                : item.fieldName === "Last Name"
+                ? "Last Name"
                 : ""
             }
           />
@@ -162,6 +161,36 @@ class FormTextField extends React.Component {
         onDragEnd={this.reorderList}
       />
       {/* ) : null} */}
+      <div
+        style={{
+          position: "absolute",
+          right: "30px",
+          bottom: "30px",
+          float: "right",
+        }}
+      >
+        <Button
+          // onClick={onClose}
+          variant="outlined"
+          size="large"
+          color="primary"
+          style={{ marginRight: "10px" }}
+        >
+          Cancel
+        </Button>
+        <Button
+          onClick={() => {
+            const reqBody = this.state.sortedList
+            this.props.submitChangedOrder(reqBody)
+          }}
+          variant="contained"
+          size="large"
+          color="primary"
+          // disabled={isSaveDisabled}
+        >
+          Save
+        </Button>
+      </div>
     </div>
   )
 }
@@ -177,7 +206,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   handleFirstNameChange,
-  loadInitialData,
+  submitChangedOrder,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormTextField)

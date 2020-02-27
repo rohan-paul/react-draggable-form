@@ -1,5 +1,10 @@
 /* eslint-disable import/prefer-default-export */
-import { FIRST_NAME, LOAD_INITIAL_DATA, SNACKBAR_STATUS } from "./types"
+import {
+  FIRST_NAME,
+  LOAD_INITIAL_DATA,
+  SNACKBAR_STATUS,
+  SUBMIT_CHANGED_ORDER,
+} from "./types"
 
 import axios from "axios"
 // const pick = require("lodash.pick")
@@ -36,6 +41,22 @@ export const loadInitialData = () => async dispatch => {
     })
     .catch(err => {
       console.log("Error occurred while fetching initial data from API")
+    })
+}
+
+export const submitChangedOrder = reqBody => async dispatch => {
+  const url = "http://54.193.89.54:8230/saveFields"
+
+  axios
+    .post(url, reqBody)
+    .then(res => {
+      dispatch({
+        type: SUBMIT_CHANGED_ORDER,
+        payload: res.data,
+      })
+    })
+    .catch(err => {
+      console.log("Error occurred while submitting changed orders ")
     })
 }
 
