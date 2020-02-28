@@ -48,6 +48,9 @@ export const submitChangedOrder = reqBody => async dispatch => {
   // const url = "http://54.193.89.54:8230/saveFields"
   const url = "https://demo1107746.mockable.io/enhancio-saveFields"
 
+  // Including the below line of code only to check / and to show to Ajay and Team, that the correct modified order of the form-fields are being sent to backend (because I had to change to mockable.io as the Real Backend API was not accepting axios GET / POST request from the deployed site at Netlify)
+  console.log("Reqeust Body sent to Backend ", reqBody)
+
   axios
     .post(url, reqBody)
     .then(res => {
