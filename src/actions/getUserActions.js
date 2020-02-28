@@ -45,7 +45,8 @@ export const loadInitialData = () => async dispatch => {
 }
 
 export const submitChangedOrder = reqBody => async dispatch => {
-  const url = "http://54.193.89.54:8230/saveFields"
+  // const url = "http://54.193.89.54:8230/saveFields"
+  const url = "https://demo1107746.mockable.io/enhancio-saveFields"
 
   axios
     .post(url, reqBody)
