@@ -9,3 +9,5 @@ The small toggle Switch in each of the Fields (shown in blue color) is used to m
 `yarn install` and then
 
 `yarn start`
+
+<img src="./draggable-form.gif">
